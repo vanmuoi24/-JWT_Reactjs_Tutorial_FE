@@ -1,8 +1,10 @@
-import { NavLink } from "react-router-dom";
-import axios from "axios";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { registerNewUser } from "../services/userService";
+
 const Register = () => {
+  let navi = useNavigate();
   const [email, setemail] = useState("");
   const [phone, setphone] = useState("");
   const [username, setusername] = useState("");
@@ -16,11 +18,6 @@ const Register = () => {
     isValuescomfirmpass: true,
   };
   const [ojbchecknput, setobjcheckinput] = useState(defauvalue);
-  useEffect(() => {
-    // axios.get(`http://localhost:8080/api/v1/test-api`).then((data) => {
-    //   console.log(data.data);
-    // });
-  }, []);
   const isvalue = () => {
     const phoneRegex = /^[0-9]{10}$/;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -61,17 +58,20 @@ const Register = () => {
     }
     return true;
   };
-  const handlevalue = () => {
+  const handlevalue = async () => {
     if (!isvalue()) {
       return false;
     } else {
-      axios.post(`http://localhost:8080/api/v1/register`, {
-        email: email,
-        phone: phone,
-        username: username,
-        pass: pass,
-      });
-      toast.success("ok");
+      let respon = await registerNewUser(email, phone, username, pass);
+      console.log(respon);
+      let severdata = respon.data;
+      console.log(severdata);
+      if (+severdata.EC === 0) {
+        toast.success(severdata.EM);
+        navi("/login");
+      } else {
+        toast.error(severdata.EM);
+      }
     }
   };
   return (
