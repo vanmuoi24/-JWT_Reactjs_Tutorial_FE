@@ -7,5 +7,13 @@ const registerNewUser = (email, phone, username, pass) => {
     pass: pass,
   });
 };
-
-export { registerNewUser };
+const loginUser = (valueLogin, pass) => {
+  return axios.post(`http://localhost:8080/api/v1/login`, {
+    email: valueLogin,
+    pass: pass,
+  });
+};
+const getAllUser = () => {
+  return axios.get(`http://localhost:8080/api/v1/user/read`);
+};
+export { registerNewUser, loginUser, getAllUser };

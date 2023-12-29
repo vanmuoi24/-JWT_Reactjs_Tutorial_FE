@@ -58,6 +58,7 @@ const Register = () => {
     }
     return true;
   };
+
   const handlevalue = async () => {
     if (!isvalue()) {
       return false;
