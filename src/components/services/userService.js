@@ -13,7 +13,9 @@ const loginUser = (valueLogin, pass) => {
     pass: pass,
   });
 };
-const getAllUser = () => {
-  return axios.get(`http://localhost:8080/api/v1/user/read`);
+const getAllUser = (page, limit) => {
+  return axios.get(
+    `http://localhost:8080/api/v1/user/read?page=${page}&&limit=${limit}`
+  );
 };
 export { registerNewUser, loginUser, getAllUser };
