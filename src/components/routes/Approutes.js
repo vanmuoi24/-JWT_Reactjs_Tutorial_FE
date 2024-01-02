@@ -10,9 +10,9 @@ const Approutes = (props) => {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/users" element={<Privateroute element={User} />} />
+        <Route path="/home" element={<Privateroute element={Homes} />} />
       </Routes>
-      <Privateroute path="/users" element={<User></User>}></Privateroute>
-      <Privateroute path="/home" element={<Homes></Homes>}></Privateroute>
     </>
   );
 };

@@ -18,4 +18,13 @@ const getAllUser = (page, limit) => {
     `http://localhost:8080/api/v1/user/read?page=${page}&&limit=${limit}`
   );
 };
-export { registerNewUser, loginUser, getAllUser };
+
+const deleteUser = (user) => {
+  return axios.delete(`http://localhost:8080/api/v1/user/delete`, {
+    data: { id: user.id },
+  });
+};
+const fetchGroup = () => {
+  return axios.get(`http://localhost:8080/api/v1/group/read`);
+};
+export { registerNewUser, loginUser, getAllUser, deleteUser, fetchGroup };
