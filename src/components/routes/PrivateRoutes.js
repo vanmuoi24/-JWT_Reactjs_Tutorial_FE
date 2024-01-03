@@ -6,7 +6,7 @@ const Privateroute = ({ element: Element, ...rest }) => {
   useEffect(() => {
     let session = sessionStorage.getItem("key");
     if (!session) {
-      navi("/login");
+      navi("/l");
     }
   }, []);
 
