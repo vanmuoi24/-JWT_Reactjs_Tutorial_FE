@@ -69,7 +69,7 @@ const Register = () => {
       console.log(severdata);
       if (+severdata.EC === 0) {
         toast.success(severdata.EM);
-        navi("/login");
+        navi("/");
       } else {
         toast.error(severdata.EM);
       }
@@ -82,7 +82,7 @@ const Register = () => {
           <div>
             <h3 className="text-center"> Register</h3>
           </div>
-          <form action="#" onSubmit={handlevalue}>
+          <form action="#">
             <label>Email:</label>
             <div className="mb-3">
               <input
@@ -154,11 +154,10 @@ const Register = () => {
               />
             </div>
             <div className="d-grid gap-2">
-              <button type="submit" className="btn btn-primary">
+              <button className="btn btn-primary" onClick={handlevalue}>
                 Register
               </button>
             </div>
-
             <hr />
             <div className="text-center mt-3">
               <NavLink to={"/login"} className="btn btn-success ">

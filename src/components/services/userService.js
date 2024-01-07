@@ -1,6 +1,7 @@
-import axios from "axios";
+import axios from "../setup/axios";
+
 const registerNewUser = (email, phone, username, pass) => {
-  return axios.post(`http://localhost:8080/api/v1/register`, {
+  return axios.post(`/api/v1/register`, {
     email: email,
     phone: phone,
     username: username,
@@ -8,23 +9,40 @@ const registerNewUser = (email, phone, username, pass) => {
   });
 };
 const loginUser = (valueLogin, pass) => {
-  return axios.post(`http://localhost:8080/api/v1/login`, {
+  return axios.post(`/api/v1/login`, {
     email: valueLogin,
     pass: pass,
   });
 };
 const getAllUser = (page, limit) => {
-  return axios.get(
-    `http://localhost:8080/api/v1/user/read?page=${page}&&limit=${limit}`
-  );
+  return axios.get(`/api/v1/user/read?page=${page}&&limit=${limit}`);
 };
 
 const deleteUser = (user) => {
-  return axios.delete(`http://localhost:8080/api/v1/user/delete`, {
+  return axios.delete(`/api/v1/user/delete`, {
     data: { id: user.id },
   });
 };
 const fetchGroup = () => {
-  return axios.get(`http://localhost:8080/api/v1/group/read`);
+  return axios.get(`/api/v1/group/read`);
 };
-export { registerNewUser, loginUser, getAllUser, deleteUser, fetchGroup };
+
+const createUser = (userdata) => {
+  return axios.post(`/api/v1/user/create`, {
+    ...userdata,
+  });
+};
+const updateUser = (userdata) => {
+  return axios.put(`/api/v1/user/update`, {
+    ...userdata,
+  });
+};
+export {
+  registerNewUser,
+  loginUser,
+  getAllUser,
+  deleteUser,
+  fetchGroup,
+  createUser,
+  updateUser,
+};

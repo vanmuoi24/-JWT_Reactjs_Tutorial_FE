@@ -12,9 +12,19 @@ const User = () => {
   const [totalpage, settptalpage] = useState(0);
   const [show, setShow] = useState(false);
   const [item, setitem] = useState({});
+  //delete
+  //update/create
+  const [showcreate, setShowcreate] = useState(false);
+  const [updateKey, setUpdateKey] = useState(0);
+  const [actionmodeluser, setactionmodeluser] = useState("");
+  const [datamodalUser, sestdataModalusser] = useState({});
+
   useEffect(() => {
     fetchAllUsers();
   }, [currenpage]);
+  useEffect(() => {
+    fetchAllUsers();
+  }, [updateKey]);
 
   const fetchAllUsers = async () => {
     try {
@@ -22,7 +32,6 @@ const User = () => {
       if (res && res.data && res.data.EC === 0) {
         settptalpage(res.data.DT.totalpage);
         setList(res.data.DT.user);
-        console.log(res.data.DT.user);
       }
     } catch (error) {
       console.error("Error fetching users:", error);
@@ -48,7 +57,23 @@ const User = () => {
       toast.error("delete Fail");
     }
   };
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    setShow(false);
+    setShowcreate(false);
+
+    sestdataModalusser({});
+  };
+
+  const handcreate = () => {
+    setactionmodeluser("CREATE");
+    setShowcreate(true);
+  };
+  const handleEditUser = (value) => {
+    sestdataModalusser(value);
+    setShowcreate(true);
+    setactionmodeluser("UPDATE");
+  };
+
   return (
     <>
       <div className="container">
@@ -57,7 +82,9 @@ const User = () => {
         </div>
         <div>
           <button onClick={fetchAllUsers}>Load</button>
-          <button>Add new User</button>
+          <button onClick={handcreate} className="btn btn-success ">
+            Add new User
+          </button>
         </div>
         <table className="table table-hover table-bordered">
           <thead>
@@ -72,12 +99,19 @@ const User = () => {
           <tbody>
             {list.map((user, index) => (
               <tr key={index}>
-                <th scope="row">{index + 1}</th>
+                <th scope="row">
+                  {(currenpage - 1) * currenlimit + index + 1}
+                </th>
                 <td>{user.username}</td>
                 <td>{user.email}</td>
                 <td>{user.Group ? user.Group.name : false}</td>
                 <td>
-                  <button className="btn btn-warning me-2 ">Edit</button>
+                  <button
+                    className="btn btn-warning me-2 "
+                    onClick={() => handleEditUser(user)}
+                  >
+                    Edit
+                  </button>
                   <button
                     onClick={() => handledelteUser(user)}
                     className="btn btn-danger d-inline me-2 "
@@ -119,7 +153,13 @@ const User = () => {
         cofirmuser={cofirmuser}
         item={item}
       />
-      <ModalUser />
+      <ModalUser
+        showcreate={showcreate}
+        handleClose={handleClose}
+        setUpdateKey={setUpdateKey}
+        action={actionmodeluser}
+        dataModal={datamodalUser}
+      />
     </>
   );
 };

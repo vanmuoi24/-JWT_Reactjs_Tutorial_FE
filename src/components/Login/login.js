@@ -51,7 +51,7 @@ const Login = () => {
           <div>
             <h3 className="text-center"> Login</h3>
           </div>
-          <form action="#" onSubmit={handleLogin}>
+          <form action="#">
             <div className="mb-3">
               <label>Email :</label>
               <input
@@ -81,7 +81,7 @@ const Login = () => {
               />
             </div>
             <div className="d-grid gap-2">
-              <button type="submit" className="btn btn-primary">
+              <button onClick={handleLogin} className="btn btn-primary">
                 Login
               </button>
             </div>

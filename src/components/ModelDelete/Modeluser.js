@@ -3,12 +3,15 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import _ from "lodash";
 import Form from "react-bootstrap/Form";
-import { fetchGroup } from "../services/userService";
+import { fetchGroup, createUser, updateUser } from "../services/userService";
 import { ListGroup } from "react-bootstrap";
 import { toast } from "react-toastify";
 const ModalUser = (props) => {
-  const [show, setShow] = useState(false);
+  const { action, dataModal } = props;
   const [userGroup, setuserGroup] = useState([]);
+  const [showcreate, setShowcreate] = useState(false);
+  const [datakey, setUpdateKey] = useState(false);
+  console.log(userGroup);
   const defaultData = {
     email: "",
     phone: "",
@@ -32,14 +35,33 @@ const ModalUser = (props) => {
     getGroup();
   }, []);
 
+  useEffect(() => {
+    if (action === "UPDATE") {
+      setUserdata({
+        ...dataModal,
+        group: dataModal.Group ? dataModal.Group.id : {},
+      });
+    }
+  }, [dataModal]);
+  useEffect(() => {
+    if (action === "CREATE") {
+      setUserdata({
+        ...dataModal,
+        group: dataModal.Group ? dataModal.Group.id : {},
+      });
+    }
+  }, [action]);
   const getGroup = async () => {
     let res = await fetchGroup();
     if (res && res.data && res.data.EC === 0) {
       setuserGroup(res.data.DT);
+      console.log(res);
+      if (res.data.DT && res.data.DT.length > 0) {
+        setUserdata({ ...Userdata, group: res.data.DT[0].id });
+      }
     }
   };
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+
   const [ojbchecknput, setobjcheckinput] = useState(checkvalidInput);
   const handlesetinput = (event, name) => {
     let _userdata = _.cloneDeep(Userdata);
@@ -48,13 +70,14 @@ const ModalUser = (props) => {
   };
   const checkvaidateInput = () => {
     // create user
+    if (action === "UPDATE") return true;
     setobjcheckinput(checkvalidInput);
     let cohieu = true;
     let arr = ["email", "phone", "password", "group"];
+
     let _validinput = _.cloneDeep(checkvalidInput);
     for (let i = 0; i < arr.length; i++) {
       if (!Userdata[arr[i]]) {
-        console.log(_validinput);
         _validinput[arr[i]] = false;
         setobjcheckinput(_validinput);
         toast.error(`Empty input ${arr[i]}`);
@@ -65,19 +88,42 @@ const ModalUser = (props) => {
     return cohieu;
   };
 
-  const handconfirmUser = () => {
-    checkvaidateInput();
+  const handconfirmUser = async () => {
+    let check = checkvaidateInput();
+    if (check === true) {
+      let res =
+        action === "CREATE"
+          ? await createUser({ ...Userdata, groupId: Userdata["group"] })
+          : await updateUser({ ...Userdata, groupId: Userdata["group"] });
+      if (res && res.data && res.data.EC === 0) {
+        toast.success(res.data.EM);
+        setShowcreate(props.handleClose);
+        props.setUpdateKey((prevKey) => prevKey + 1);
+        if (res.data.DT && res.data.DT.length > 0) {
+          setUserdata({ ...Userdata, group: res.data.DT[0].id });
+        }
+      }
+      if (res && res.data && res.data.EC !== 0) {
+        toast.error(res.data.EM);
+        let _validinput = _.cloneDeep(checkvalidInput);
+        _validinput[res.data.DT] = false;
+        setobjcheckinput(_validinput);
+      }
+    }
   };
-  console.log(checkvalidInput);
+  const handleclossuser = () => {
+    props.handleClose();
+    setUserdata(defaultData);
+    setobjcheckinput(checkvalidInput);
+  };
+
   return (
     <>
-      <Button variant="primary" onClick={handleShow}>
-        Launch demo modal
-      </Button>
-
-      <Modal show={show} onHide={handleClose} size="xl">
+      <Modal show={props.showcreate} onHide={() => handleclossuser()} size="xl">
         <Modal.Header closeButton>
-          <Modal.Title>Update user</Modal.Title>
+          <Modal.Title>
+            {action === "CREATE" ? "Create New User" : "Edit a User"}
+          </Modal.Title>
         </Modal.Header>
         <div className="row p-md-3 ">
           {" "}
@@ -86,6 +132,7 @@ const ModalUser = (props) => {
               Email address :(<span style={{ color: "red" }}>*</span>)
             </label>
             <input
+              disabled={action === "CREATE" ? false : true}
               type="email"
               className={
                 ojbchecknput.email
@@ -101,6 +148,7 @@ const ModalUser = (props) => {
               Phone Number :(<span style={{ color: "red" }}>*</span>)
             </label>
             <input
+              disabled={action === "CREATE" ? false : true}
               type="text"
               className={
                 ojbchecknput.phone
@@ -124,42 +172,47 @@ const ModalUser = (props) => {
             />
           </div>
           <div className="form-group mt-3  col-12  col-sm-6">
-            <label>
-              Passord :(<span style={{ color: "red" }}>*</span>)
-            </label>
-            <input
-              type="text"
-              className={
-                ojbchecknput.password
-                  ? "form-control "
-                  : "form-control  is-invalid "
-              }
-              value={Userdata.password}
-              onChange={(event) =>
-                handlesetinput(event.target.value, "password")
-              }
-            />
+            {action === "CREATE" && (
+              <>
+                <label>
+                  Passord :(<span style={{ color: "red" }}>*</span>)
+                </label>
+                <input
+                  type="text"
+                  className={
+                    ojbchecknput.password
+                      ? "form-control "
+                      : "form-control  is-invalid "
+                  }
+                  value={Userdata.password}
+                  onChange={(event) =>
+                    handlesetinput(event.target.value, "password")
+                  }
+                />
+              </>
+            )}
           </div>
           <div className="form-group mt-3  col-12  col-sm-12">
             <label>Adress :</label>
             <input
               type="text"
               className="form-control"
-              vvaue={Userdata.address}
-              onChange={(event) => handlesetinput(event.target.value, "adress")}
+              value={Userdata.address}
+              onChange={(event) =>
+                handlesetinput(event.target.value, "address")
+              }
             />
           </div>
           <div className="form-group mt-3  col-12  col-sm-6">
             <label>Grender :</label>
-
             <Form.Select
               className={
                 ojbchecknput.sex ? "form-select " : "form-select  is-invalid "
               }
               aria-label="Default select example"
               onChange={(event) => handlesetinput(event.target.value, "sex")}
+              value={Userdata.sex}
             >
-              <option>chọn Giới Tính</option>
               <option value="Male">Male</option>
               <option value="Female">Female</option>
               <option value="Female">Female </option>
@@ -175,8 +228,8 @@ const ModalUser = (props) => {
               }
               aria-label="Default select example"
               onChange={(event) => handlesetinput(event.target.value, "group")}
+              value={Userdata.group}
             >
-              <option>chọn Phân Quyền</option>
               {userGroup.map((item, index) => (
                 <option key={index} value={item.id}>
                   {item.name}
@@ -186,7 +239,7 @@ const ModalUser = (props) => {
           </div>
         </div>
         <Modal.Footer>
-          <Button variant="secondary" onClick={props.handleClose}>
+          <Button variant="secondary" onClick={() => handleclossuser()}>
             Close
           </Button>
           <Button variant="primary" onClick={() => handconfirmUser()}>
