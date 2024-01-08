@@ -82,7 +82,7 @@ const Register = () => {
           <div>
             <h3 className="text-center"> Register</h3>
           </div>
-          <form action="#">
+          <form>
             <label>Email:</label>
             <div className="mb-3">
               <input
@@ -153,18 +153,18 @@ const Register = () => {
                 onChange={(event) => setpcomfirm(event.target.value)}
               />
             </div>
-            <div className="d-grid gap-2">
-              <button className="btn btn-primary" onClick={handlevalue}>
-                Register
-              </button>
-            </div>
-            <hr />
-            <div className="text-center mt-3">
-              <NavLink to={"/login"} className="btn btn-success ">
-                Already've an account Login
-              </NavLink>
-            </div>
           </form>
+          <div className="d-grid gap-2">
+            <button className="btn btn-primary" onClick={handlevalue}>
+              Register
+            </button>
+          </div>
+          <hr />
+          <div className="text-center mt-3">
+            <NavLink to={"/"} className="btn btn-success ">
+              Already've an account Login
+            </NavLink>
+          </div>
         </div>
       </div>
     </div>

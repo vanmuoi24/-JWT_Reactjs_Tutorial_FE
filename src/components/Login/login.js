@@ -34,7 +34,6 @@ const Login = () => {
       };
       sessionStorage.setItem("key", JSON.stringify(datauserlogin));
       navi("/users");
-      window.location.reload();
     } else {
       toast.error(res.data.EM);
     }
@@ -47,7 +46,7 @@ const Login = () => {
           <p className=" fw-bolder">Connect with friends and the world</p>
           <p>around you on Facebook.</p>
         </div>
-        <div className="col-sm-6 from">
+        <div className="col-sm-6 input-row p-md-4">
           <div>
             <h3 className="text-center"> Login</h3>
           </div>
@@ -80,24 +79,24 @@ const Login = () => {
                 onChange={(event) => setpass(event.target.value)}
               />
             </div>
-            <div className="d-grid gap-2">
-              <button onClick={handleLogin} className="btn btn-primary">
-                Login
-              </button>
-            </div>
-
-            <div className="text-center mt-3 ">
-              <a href="#" className="forgot">
-                Forgot password?
-              </a>
-            </div>
-            <hr />
-            <div className="text-center mt-3">
-              <NavLink to={"/register"} className="btn btn-success ">
-                Create new account
-              </NavLink>
-            </div>
           </form>
+          <div className="d-grid gap-2 mt-5 ">
+            <button onClick={handleLogin} className="btn btn-primary col-12">
+              Login
+            </button>
+          </div>
+
+          <div className="text-center mt-3 ">
+            <a href="#" className="forgot">
+              Forgot password?
+            </a>
+          </div>
+          <hr />
+          <div className="text-center mt-3">
+            <NavLink to={"/register"} className="btn btn-success ">
+              Create new account
+            </NavLink>
+          </div>
         </div>
       </div>
     </div>
