@@ -4,6 +4,8 @@ import { useState } from "react";
 
 import { toast } from "react-toastify";
 import { loginUser } from "../services/userService";
+import { useDispatch, useSelector } from "react-redux";
+import { UserLogin } from "../Redux/actions/Useraction";
 const Login = () => {
   let navi = useNavigate();
   const [valueLogin, setvalueLogin] = useState("");
@@ -13,6 +15,9 @@ const Login = () => {
     isValuespass: true,
   };
   const [ojbchecknput, setobjcheckinput] = useState(defauvalue);
+  const dataUserLogin = useSelector((state) => state.acount.acount);
+  console.log(dataUserLogin);
+  let dispath = useDispatch();
   const handleLogin = async () => {
     setobjcheckinput(defauvalue);
     if (!valueLogin) {
@@ -26,13 +31,18 @@ const Login = () => {
       return;
     }
     let res = await loginUser(valueLogin, pass);
+    console.log(res);
     if (res && res.data && +res.data.EC === 0) {
+      dispath(
+        UserLogin({
+          username: res.data.DT.username,
+          email: res.data.DT.email,
+          token: res.data.DT.access_token,
+          isAuthenticated: true,
+          groupWithrolos: res.data.DT.data.Roles,
+        })
+      );
       toast.success(res.data.EM);
-      let datauserlogin = {
-        isAuthenticated: true,
-        token: "fake token",
-      };
-      sessionStorage.setItem("key", JSON.stringify(datauserlogin));
       navi("/users");
     } else {
       toast.error(res.data.EM);

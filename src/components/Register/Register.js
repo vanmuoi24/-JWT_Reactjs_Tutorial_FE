@@ -69,7 +69,7 @@ const Register = () => {
       console.log(severdata);
       if (+severdata.EC === 0) {
         toast.success(severdata.EM);
-        navi("/");
+        navi("/login");
       } else {
         toast.error(severdata.EM);
       }
@@ -161,7 +161,7 @@ const Register = () => {
           </div>
           <hr />
           <div className="text-center mt-3">
-            <NavLink to={"/"} className="btn btn-success ">
+            <NavLink to={"/login"} className="btn btn-success ">
               Already've an account Login
             </NavLink>
           </div>

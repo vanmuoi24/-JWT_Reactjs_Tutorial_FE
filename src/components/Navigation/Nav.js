@@ -1,21 +1,20 @@
 import { NavLink, Navigate, useNavigate } from "react-router-dom";
 import "./Nav.scss";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 const Nav = () => {
   let navi = useNavigate();
-  const [isshow, setIsshow] = useState(false);
+  const dataUserLogin = useSelector((state) => state.acount.acount);
   useEffect(() => {
-    let session = sessionStorage.getItem("key");
-    if (session) {
-      setIsshow(true);
-      return navi("/users");
+    if (dataUserLogin.isAuthenticated === true) {
+      navi("/users");
     }
   }, []);
 
   return (
     <>
-      {isshow === true && (
+      {dataUserLogin.isAuthenticated === true && (
         <div className="container">
           <nav className="navbar navbar-expand-sm navbar-dark bg-dark">
             <div className="container-fluid">
@@ -32,7 +31,7 @@ const Nav = () => {
               </button>
               <div className="collapse navbar-collapse" id="mynavbar">
                 <ul className="navbar-nav me-auto ">
-                  <NavLink to={"/home"} className="nav-link">
+                  <NavLink to={"/"} className="nav-link">
                     Home
                   </NavLink>
 

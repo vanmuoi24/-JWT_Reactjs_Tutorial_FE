@@ -5,6 +5,8 @@ import { toast } from "react-toastify";
 import ModelDetele from "../ModelDelete/Modeldelete";
 import { set } from "lodash";
 import ModalUser from "../ModelDelete/Modeluser";
+import { Dispatch } from "redux";
+import { useSelector } from "react-redux";
 const User = () => {
   const [list, setList] = useState([]);
   const [currenpage, setcurrenpage] = useState(1);
@@ -17,6 +19,7 @@ const User = () => {
   const [showcreate, setShowcreate] = useState(false);
   const [actionmodeluser, setactionmodeluser] = useState("");
   const [datamodalUser, sestdataModalusser] = useState({});
+
   useEffect(() => {
     if (currenpage !== 0) {
       fetchAllUsers();

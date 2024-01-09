@@ -8,10 +8,10 @@ const Approutes = (props) => {
   return (
     <>
       <Routes>
+        <Route path="/" element={<Homes />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/users" element={<Privateroute element={User} />} />
-        <Route path="/home" element={<Privateroute element={Homes} />} />
       </Routes>
     </>
   );
