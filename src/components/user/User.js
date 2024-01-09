@@ -15,27 +15,24 @@ const User = () => {
   //delete
   //update/create
   const [showcreate, setShowcreate] = useState(false);
-  const [updateKey, setUpdateKey] = useState(0);
   const [actionmodeluser, setactionmodeluser] = useState("");
   const [datamodalUser, sestdataModalusser] = useState({});
-
   useEffect(() => {
-    fetchAllUsers();
+    if (currenpage !== 0) {
+      fetchAllUsers();
+    }
   }, [currenpage]);
-  useEffect(() => {
-    fetchAllUsers();
-  }, [updateKey]);
 
   const fetchAllUsers = async () => {
     try {
       let res = await getAllUser(currenpage, currenlimit);
+
       if (res && res.data && res.data.EC === 0) {
         settptalpage(res.data.DT.totalpage);
         setList(res.data.DT.user);
+        return true;
       }
-    } catch (error) {
-      console.error("Error fetching users:", error);
-    }
+    } catch (error) {}
   };
   const handlePageClick = async (event) => {
     setcurrenpage(+event.selected + 1);
@@ -51,20 +48,20 @@ const User = () => {
     let res = await deleteUser(item);
     if (res && res.data.EC === 0) {
       toast.success("delete secces");
-      await fetchAllUsers();
       setShow(false);
+      await fetchAllUsers();
     } else {
       toast.error("delete Fail");
     }
   };
-  const handleClose = () => {
+  const handleClose = async () => {
     setShow(false);
     setShowcreate(false);
-
     sestdataModalusser({});
+    await fetchAllUsers();
   };
 
-  const handcreate = () => {
+  const handcreate = async () => {
     setactionmodeluser("CREATE");
     setShowcreate(true);
   };
@@ -156,7 +153,6 @@ const User = () => {
       <ModalUser
         showcreate={showcreate}
         handleClose={handleClose}
-        setUpdateKey={setUpdateKey}
         action={actionmodeluser}
         dataModal={datamodalUser}
       />

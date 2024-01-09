@@ -10,7 +10,7 @@ const ModalUser = (props) => {
   const { action, dataModal } = props;
   const [userGroup, setuserGroup] = useState([]);
   const [showcreate, setShowcreate] = useState(false);
-  const [datakey, setUpdateKey] = useState(false);
+
   console.log(userGroup);
   const defaultData = {
     email: "",
@@ -98,7 +98,7 @@ const ModalUser = (props) => {
       if (res && res.data && res.data.EC === 0) {
         toast.success(res.data.EM);
         setShowcreate(props.handleClose);
-        props.setUpdateKey((prevKey) => prevKey + 1);
+
         if (res.data.DT && res.data.DT.length > 0) {
           setUserdata({ ...Userdata, group: res.data.DT[0].id });
         }
