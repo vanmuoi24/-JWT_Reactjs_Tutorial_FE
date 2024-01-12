@@ -37,6 +37,13 @@ const updateUser = (userdata) => {
     ...userdata,
   });
 };
+
+const getUserAcount = () => {
+  return axios.get(`/api/v1/acount`);
+};
+const getUserLogOut = () => {
+  return axios.post(`/api/v1/logout`);
+};
 export {
   registerNewUser,
   loginUser,
@@ -45,4 +52,6 @@ export {
   fetchGroup,
   createUser,
   updateUser,
+  getUserAcount,
+  getUserLogOut,
 };

@@ -1,22 +1,17 @@
-import Nav from "./components/Navigation/Nav";
+import NavHeader from "./components/Navigation/Nav";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useEffect, useState } from "react";
 import Approutes from "./components/routes/Approutes";
 import { Route, Router } from "react-router";
 import { BrowserRouter } from "react-router-dom";
+import { Audio } from "react-loader-spinner";
+import { useSelector } from "react-redux";
 function App() {
-  const [acout, setacoutn] = useState({});
-  useEffect(() => {
-    let secCount = sessionStorage.getItem("key");
-    if (secCount) {
-      setacoutn(JSON.parse(secCount));
-    }
-  }, []);
   return (
     <BrowserRouter>
       <div className="App">
-        <Nav></Nav>
+        <NavHeader></NavHeader>
         <Approutes />
         <ToastContainer
           position="top-right"

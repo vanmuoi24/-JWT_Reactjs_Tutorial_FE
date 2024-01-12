@@ -6,7 +6,8 @@ import ModelDetele from "../ModelDelete/Modeldelete";
 import { set } from "lodash";
 import ModalUser from "../ModelDelete/Modeluser";
 import { Dispatch } from "redux";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { UserLogin } from "../Redux/actions/Useraction";
 const User = () => {
   const [list, setList] = useState([]);
   const [currenpage, setcurrenpage] = useState(1);
@@ -19,7 +20,7 @@ const User = () => {
   const [showcreate, setShowcreate] = useState(false);
   const [actionmodeluser, setactionmodeluser] = useState("");
   const [datamodalUser, sestdataModalusser] = useState({});
-
+  let dispath = useDispatch();
   useEffect(() => {
     if (currenpage !== 0) {
       fetchAllUsers();
@@ -34,6 +35,7 @@ const User = () => {
         settptalpage(res.data.DT.totalpage);
         setList(res.data.DT.user);
         return true;
+      } else {
       }
     } catch (error) {}
   };

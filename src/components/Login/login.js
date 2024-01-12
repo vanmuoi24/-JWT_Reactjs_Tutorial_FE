@@ -1,11 +1,11 @@
-import { NavLink, json, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import "./login.scss";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { toast } from "react-toastify";
 import { loginUser } from "../services/userService";
 import { useDispatch, useSelector } from "react-redux";
-import { UserLogin } from "../Redux/actions/Useraction";
+import { UserLogin, reset, tokenHeader } from "../Redux/actions/Useraction";
 const Login = () => {
   let navi = useNavigate();
   const [valueLogin, setvalueLogin] = useState("");
@@ -15,9 +15,12 @@ const Login = () => {
     isValuespass: true,
   };
   const [ojbchecknput, setobjcheckinput] = useState(defauvalue);
-  const dataUserLogin = useSelector((state) => state.acount.acount);
-  console.log(dataUserLogin);
+  // const dataUserLogin = useSelector((state) => state.acount.token);
+  // console.log(dataUserLogin);
   let dispath = useDispatch();
+  useEffect(() => {
+    dispath(reset());
+  }, []);
   const handleLogin = async () => {
     setobjcheckinput(defauvalue);
     if (!valueLogin) {
@@ -42,6 +45,12 @@ const Login = () => {
           groupWithrolos: res.data.DT.data.Roles,
         })
       );
+
+      // dispath(
+      //   tokenHeader({
+      //     token: res.data.DT.access_token,
+      //   })
+      // );
       toast.success(res.data.EM);
       navi("/users");
     } else {
@@ -97,8 +106,8 @@ const Login = () => {
           </div>
 
           <div className="text-center mt-3 ">
-            <a href="#" className="forgot">
-              Forgot password?
+            <a href="/" className="forgot">
+              back Home
             </a>
           </div>
           <hr />

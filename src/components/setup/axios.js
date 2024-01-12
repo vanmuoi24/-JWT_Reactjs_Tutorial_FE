@@ -5,8 +5,9 @@ import { toast } from "react-toastify";
 const instance = axios.create({
   baseURL: "http://localhost:8080",
 });
-instance.defaults.withCredentials = true;
 
+instance.defaults.withCredentials = true;
+// instance.defaults.headers.common["Authorization"] = ` `;
 // Add a request interceptor for 'instance'
 instance.interceptors.request.use(
   function (config) {
@@ -36,6 +37,7 @@ instance.interceptors.response.use(
       // authentication (token related issues)
       case 401: {
         toast.error("Request failed with status code 401");
+        window.location.href = "/login";
         return Promise.reject(new APIError(error.message, 401));
       }
 

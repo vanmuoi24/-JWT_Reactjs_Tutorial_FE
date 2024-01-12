@@ -4,3 +4,14 @@ export const UserLogin = (data) => {
     payload: data,
   };
 };
+export const reset = () => {
+  return {
+    type: "RESET_DATA",
+  };
+};
+export const tokenHeader = (data) => {
+  return {
+  type: "tokenHeader",
+    payload: data,
+  };
+};
